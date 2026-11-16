@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#152d36">
+  <title>Think Thank · Research workspace</title>
+  <link rel="stylesheet" href="/static/styles.css">
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to workspace</a>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Research sessions">
+      <a class="brand" href="/" aria-label="Think Thank home"><span class="brand-mark" aria-hidden="true">tt<span>·</span></span><span>think thank<small>A little more understanding.</small></span></a>
+      <button id="new-session" class="button sidebar-new" type="button"><span aria-hidden="true">＋</span> New research</button>
+      <div class="sidebar-heading"><h2>Your workspace</h2><span id="session-count" class="count">0</span></div>
+      <nav id="session-list" aria-label="Session history"><p class="sidebar-empty">Loading your sessions…</p></nav>
+      <div class="sidebar-footer"><span class="local-dot" aria-hidden="true"></span><div>Local workspace<small>Saved on this server. Live research uses your configured providers.</small></div></div>
+    </aside>
+    <main id="main" tabindex="-1">
+      <header class="topbar"><span class="eyebrow">THE RESEARCH WORKSPACE</span><span id="connection" class="connection">Connecting to local server…</span></header>
+      <div id="connection-error" class="notice error" role="alert" hidden><span id="connection-error-text"></span><button id="retry" class="text-button" type="button">Retry now</button></div>
+      <div id="action-error" class="notice error" role="alert" hidden></div>
+      <div id="announcement" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
+      <section id="new-workspace" aria-labelledby="welcome-title">
+        <div class="intro"><span class="eyebrow teal">CURIOSITY, WITH A PAPER TRAIL</span><h1 id="welcome-title">Go beyond the<br>first answer.</h1><p>Turn a question into a considered, source-linked report. Explore the evidence, challenge the hypotheses, and see what remains unknown.</p></div>
+        <form id="research-form" class="composer">
+          <div class="section-heading"><h2>What would you like to understand?</h2><span class="step-label">01 / DEFINE YOUR RESEARCH</span></div>
+          <label for="topic">Research question or topic</label>
+          <textarea id="topic" name="topic" rows="4" maxlength="10000" required placeholder="e.g. When do four-day workweeks improve productivity, and where does the evidence fall short?" aria-describedby="topic-help"></textarea>
+          <p id="topic-help" class="hint">A specific question, context, and competing perspectives make a stronger starting point.</p>
+          <fieldset class="mode-field"><legend>Research mode</legend><div class="mode-options"><label class="mode-option"><input type="radio" name="mode" value="demo" checked><span><strong>Try a demo</strong><small>Synthetic evidence · no API key needed</small></span><span class="mode-tag">DEMO</span></label><label class="mode-option"><input type="radio" name="mode" value="live"><span><strong>Live research</strong><small>Your model + web search providers</small></span><span class="mode-tag">WEB</span></label></div></fieldset>
+          <div id="new-demo-warning" class="notice demo">Demo uses synthetic sources and scripted findings to show the workflow. It is not factual research on your topic.</div>
+          <div id="readiness" class="notice neutral" role="status">Checking server configuration…</div>
+          <details id="advanced" class="advanced"><summary>Model, search &amp; research budgets <span>Fine-tune your run</span></summary><div class="advanced-body"><div class="form-grid provider-fields"><div><label for="model">Model</label><input id="model" name="model" type="text" maxlength="1000" placeholder="Server default" autocomplete="off"></div><div><label for="search">Search provider</label><select id="search" name="search"><option value="duckduckgo">DuckDuckGo</option><option value="tavily">Tavily</option></select></div></div><p class="hint">Live providers are configured on the server. Never enter API keys here. Demo ignores model and search settings.</p><div id="new-limits" class="form-grid budgets"></div><p class="hint">Cost is an estimate using your input/output rates, not a billing cap. Search fees and provider charges may differ. Limits apply cumulatively across resumes.</p></div></details>
+          <div class="composer-footer"><span>Traceable sources. Explicit uncertainty.<br><small>You can pause and resume at a saved checkpoint.</small></span><button id="start" class="button primary" type="submit" disabled>Start research <span aria-hidden="true">↗</span></button></div>
+        </form>
+        <div class="principles"><div><span>01</span><h3>Follow the evidence</h3><p>Exact quotations connect findings to their stored sources.</p></div><div><span>02</span><h3>Challenge the answer</h3><p>Keep support, opposition, and proposed tests in view.</p></div><div><span>03</span><h3>Know the boundaries</h3><p>Track open questions, resource use, and limitations.</p></div></div>
+      </section>
+      <section id="session-workspace" aria-labelledby="session-title" hidden>
+        <div id="session-loading" class="empty-state" role="status" hidden>Loading research session…</div>
+        <div id="session-content" hidden>
+          <div class="session-heading"><div><div class="session-kicker"><span id="session-mode" class="eyebrow teal"></span><span id="session-status" class="badge"></span></div><h1 id="session-title"></h1><p id="session-meta" class="muted"></p></div><div class="session-actions"><button id="pause" class="button secondary" type="button" hidden>Pause research</button><button id="show-resume" class="button primary" type="button" aria-expanded="false" aria-controls="resume-panel" hidden>Resume research</button></div></div>
+          <div id="session-demo-warning" class="notice demo" hidden><strong>Synthetic demo — not factual research.</strong> Sources, quotations, and findings are generated examples. Do not use them as real-world evidence.</div>
+          <div id="session-readiness" class="notice neutral" hidden></div>
+          <div id="stop-reason" class="notice neutral" hidden></div>
+          <form id="resume-panel" class="card resume-panel" hidden><h2>Continue with room to explore</h2><p>These are <strong>total session limits</strong>, not an additional allowance. Increase exhausted budgets above the usage shown below. Elapsed time and token use do not reset.</p><div id="resume-limits" class="form-grid budgets"></div><p class="hint">Rates estimate model cost; provider billing and search fees may differ. Resuming live research uses current server credentials.</p><div class="button-row"><button id="resume-submit" class="button primary" type="submit">Save limits &amp; resume</button><button id="cancel-resume" class="button secondary" type="button">Cancel</button></div></form>
+          <div id="stats" class="stats" aria-label="Session usage"></div>
+          <section class="activity card" aria-labelledby="activity-title"><div class="activity-head"><div><span id="activity-dot" class="activity-dot" aria-hidden="true"></span><h2 id="activity-title">Activity</h2><span id="activity-state" class="muted"></span></div><span id="activity-time" class="hint"></span></div><p id="latest-event" class="latest-event"></p><details id="timeline-details"><summary>Activity timeline <span id="event-count"></span></summary><ol id="timeline" class="timeline"></ol><p class="hint">Recent server events; the timeline may reset when the server restarts. Saved research is preserved.</p></details></section>
+          <div class="tabs" role="tablist" aria-label="Research artifacts"><button id="tab-overview" type="button" role="tab" aria-selected="true" aria-controls="panel-overview" data-tab="overview">Overview</button><button id="tab-evidence" type="button" role="tab" aria-selected="false" aria-controls="panel-evidence" tabindex="-1" data-tab="evidence">Evidence</button><button id="tab-hypotheses" type="button" role="tab" aria-selected="false" aria-controls="panel-hypotheses" tabindex="-1" data-tab="hypotheses">Hypotheses</button><button id="tab-report" type="button" role="tab" aria-selected="false" aria-controls="panel-report" tabindex="-1" data-tab="report">Report</button></div>
+          <section id="panel-overview" class="tab-panel" role="tabpanel" aria-labelledby="tab-overview" tabindex="0"></section><section id="panel-evidence" class="tab-panel" role="tabpanel" aria-labelledby="tab-evidence" tabindex="0" hidden></section><section id="panel-hypotheses" class="tab-panel" role="tabpanel" aria-labelledby="tab-hypotheses" tabindex="0" hidden></section><section id="panel-report" class="tab-panel" role="tabpanel" aria-labelledby="tab-report" tabindex="0" hidden></section>
+        </div>
+      </section>
+      <footer class="main-footer"><span>THINK THANK</span><span>Research is a process, not a promise of certainty.</span></footer>
+    </main>
+  </div>
+</body>
+</html>
